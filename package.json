@@ -10,7 +10,12 @@
     "pw:report": "playwright show-report",
     "test:selenium": "tsx selenium/example.ts",
     "driver:chrome": "node scripts/fetch-chromedriver.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "agent:selftest": "tsx src/cli/selftest.ts",
+    "agent:login": "tsx src/cli/login.ts",
+    "agent:brief": "tsx src/cli/brief.ts",
+    "agent:serve": "tsx src/cli/serve.ts",
+    "agent:morning": "tsx src/schedule/morning.ts"
   },
   "keywords": [
     "playwright",

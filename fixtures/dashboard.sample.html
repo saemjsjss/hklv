@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+  Synthetic fixture that mirrors the STRUCTURE of the real Hangeul admin
+  dashboard (class names, nav groups, stat cards, workflow items, a list table)
+  but contains only fake data. Used by the offline self-test so the extractors
+  can be validated without touching the live site or real student PII.
+-->
+<html lang="en"><head><meta charset="UTF-8"><title>Dashboard — Hangeul Admin</title></head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand"><span>Hangeul <small>Admin Panel</small></span></div>
+  <nav class="sb-nav">
+    <div class="sb-group">
+      <div class="sb-group-title">Overview</div>
+      <a href="https://example.test/admin/index.php" class="sb-item active"><i class="fas fa-th-large"></i> Dashboard</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-title">Leads</div>
+      <a href="https://example.test/admin/consult_requests.php" class="sb-item"><i class="fas fa-headset"></i> Consultation Requests <span class="sb-badge warn">7</span></a>
+      <a href="https://example.test/admin/consult_consultants.php" class="sb-item"><i class="fas fa-user-tie"></i> Consultants</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-title">Student Management</div>
+      <a href="https://example.test/admin/students.php" class="sb-item"><i class="fas fa-users"></i> All Students <span class="sb-badge info">150</span></a>
+      <a href="https://example.test/admin/students.php?status=pending" class="sb-item"><i class="fas fa-clock"></i> Pending Payments</a>
+      <a href="https://example.test/admin/students.php?filter_docs=missing" class="sb-item"><i class="fas fa-folder-minus"></i> Missing Documents <span class="sb-badge warn">140</span></a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-title">Team</div>
+      <a href="https://example.test/admin/tasks.php" class="sb-item"><i class="fas fa-tasks"></i> Tasks</a>
+      <a href="https://example.test/admin/consultations.php" class="sb-item"><i class="fas fa-headset"></i> Consultations</a>
+      <a href="https://example.test/admin/trash.php" class="sb-item"><i class="fas fa-trash-alt"></i> Trash <span class="sb-badge warn">3</span></a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-title">Automation</div>
+      <a href="https://example.test/admin/reminders.php" class="sb-item"><i class="fas fa-paper-plane"></i> Document Reminders <span class="sb-badge info">9</span></a>
+      <a href="https://example.test/admin/notice.php" class="sb-item"><i class="fas fa-bullhorn"></i> Send Notice</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-title">B2B</div>
+      <a href="https://example.test/admin/partners.php" class="sb-item"><i class="fas fa-handshake"></i> Partners</a>
+      <a href="https://example.test/admin/partner_messages.php" class="sb-item"><i class="fas fa-comments"></i> Partner Messages</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-title">Reports &amp; Tools</div>
+      <a href="https://example.test/admin/reports.php" class="sb-item"><i class="fas fa-chart-bar"></i> Reports</a>
+      <a href="https://example.test/admin/audit_log.php" class="sb-item"><i class="fas fa-shield-alt"></i> Audit Log</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main-wrap">
+  <header class="top-bar"><h1><i class="fas fa-th-large"></i> Dashboard</h1></header>
+  <main class="content">
+
+    <div class="stats-row">
+      <a href="https://example.test/admin/students.php" class="stat-card">
+        <div class="stat-num">150</div><div class="stat-lbl">Total Students</div>
+      </a>
+      <a href="https://example.test/admin/students.php?status=pending" class="stat-card">
+        <div class="stat-num">2</div><div class="stat-lbl">Pending Payment</div>
+      </a>
+      <a href="https://example.test/admin/students.php?status=verified" class="stat-card">
+        <div class="stat-num">148</div><div class="stat-lbl">Verified</div>
+      </a>
+      <a href="https://example.test/admin/students.php?stage=Admitted" class="stat-card">
+        <div class="stat-num">4</div><div class="stat-lbl">Admitted</div>
+      </a>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><div class="card-title"><i class="fas fa-exclamation-circle"></i> Needs Attention</div></div>
+        <div class="card-body">
+          <a href="https://example.test/admin/students.php?status=pending" class="wf-item">
+            <div class="wf-info"><strong>Payment Verification</strong><span>Students waiting for payment approval</span></div>
+            <div class="wf-count">2</div>
+          </a>
+          <a href="https://example.test/admin/students.php?filter_docs=missing" class="wf-item">
+            <div class="wf-info"><strong>Missing Documents</strong><span>Verified students who haven't submitted docs</span></div>
+            <div class="wf-count">140</div>
+          </a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title"><i class="fas fa-route"></i> Application Pipeline</div></div>
+        <div class="card-body">
+          <a href="https://example.test/admin/students.php?stage=Payment+Verified" class="wf-item">
+            <div class="wf-info"><strong>Payment Verified</strong></div><div class="wf-count">148</div>
+          </a>
+          <a href="https://example.test/admin/students.php?stage=Documents+Under+Review" class="wf-item">
+            <div class="wf-info"><strong>Documents Under Review</strong></div><div class="wf-count">0</div>
+          </a>
+          <a href="https://example.test/admin/students.php?stage=Admitted+%2F+Completed" class="wf-item">
+            <div class="wf-info"><strong>Admitted / Completed</strong></div><div class="wf-count">4</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-4">
+      <div class="stat-card"><div class="stat-num">30</div><div class="stat-lbl">This Week</div></div>
+      <div class="stat-card"><div class="stat-num">120</div><div class="stat-lbl">This Month</div></div>
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-lbl">Docs Approved</div></div>
+      <div class="stat-card"><div class="stat-num">12</div><div class="stat-lbl">Total Docs</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fas fa-users"></i> Students</div></div>
+      <div class="card-body">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Program</th><th>Stage</th><th>Docs</th></tr></thead>
+          <tbody>
+            <tr><td>Sample Student A</td><td>KLP</td><td>Payment Verified</td><td><span class="badge badge-warn">Missing</span></td></tr>
+            <tr><td>Sample Student B</td><td>EAP</td><td>Payment Verified</td><td><span class="badge badge-warn">Missing</span></td></tr>
+            <tr><td>Sample Student C</td><td>Master's Degree</td><td>Admitted / Completed</td><td><span class="badge badge-ok">Verified</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+</body></html>

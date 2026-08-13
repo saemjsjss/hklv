@@ -15,5 +15,5 @@
     "verbatimModuleSyntax": false,
     "noEmit": true
   },
-  "include": ["tests", "selenium", "playwright.config.ts"]
+  "include": ["src", "tests", "selenium", "playwright.config.ts"]
 }
