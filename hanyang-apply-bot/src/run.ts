@@ -60,7 +60,8 @@ async function main(): Promise<void> {
       const { notes } = await fillStudent(page, s, uploadsDir);
       notesStr = notes.join('; ');
 
-      const shot = join(shotsDir, `${String(s.rowNum).padStart(3, '0')}_${s.folder || 'student'}.png`);
+      const safeFolder = (s.folder || 'student').replace(/[^A-Za-z0-9_-]+/g, '_').slice(-40);
+      const shot = join(shotsDir, `${String(s.rowNum).padStart(3, '0')}_${safeFolder}.png`);
       await page.screenshot({ path: shot, fullPage: true }).catch(() => {});
 
       if (config.submit) {
