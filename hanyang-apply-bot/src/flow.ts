@@ -67,7 +67,7 @@ export async function navigateToForm(page: Page, url: string): Promise<void> {
 
   await page
     .locator('th, td, label')
-    .filter({ hasText: /student email address/i })
+    .filter({ hasText: /student email address|유학원\s*학생\s*이메일/i })
     .first()
     .waitFor({ timeout: 15_000 })
     .catch(() => log.warn('Agency form field (student email address) did not appear in time.'));
