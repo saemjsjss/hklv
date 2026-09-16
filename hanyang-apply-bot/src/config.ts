@@ -37,7 +37,7 @@ export const config = {
   outputDir: str('HY_OUTPUT_DIR', 'output'),
   dataStart: num('HY_DATA_START', 4),
   submit: bool('HY_SUBMIT', false),
-  submitText: str('HY_SUBMIT_TEXT', '저장'),
+  submitText: str('HY_SUBMIT_TEXT', 'Save & Submit'),
   only: str('HY_ONLY', ''),
   limit: num('HY_LIMIT', 0),
   login: { user: str('HY_LOGIN_USER'), pass: str('HY_LOGIN_PASS') },
