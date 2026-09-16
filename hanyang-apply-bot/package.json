@@ -6,6 +6,7 @@
   "description": "Fills the Hanyang IEI agency application (원서접수시스템) from a spreadsheet, in Chrome via Playwright.",
   "scripts": {
     "selftest": "tsx src/selftest.ts",
+    "probe": "tsx src/probe.ts",
     "fill": "tsx src/run.ts",
     "typecheck": "tsc --noEmit"
   },
