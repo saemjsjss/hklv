@@ -1,0 +1,5 @@
+Put this student's files here, named exactly:
+  photo.jpg      (사진 — JPEG only, <=20KB)
+  passport.jpg   (여권파일 — jpg or pdf)
+  education.pdf  (최종학력서류)
+  gap.pdf        (공백기 증명 — only if applicable)

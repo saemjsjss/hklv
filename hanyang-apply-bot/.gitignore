@@ -1,0 +1,21 @@
+# Node
+node_modules/
+.env
+
+# Run output / logs / saved browser session
+data/
+output/
+*.log
+
+# Student PII — NEVER commit real photos, passports or education documents
+uploads/**/*.jpg
+uploads/**/*.jpeg
+uploads/**/*.png
+uploads/**/*.pdf
+# keep the example folder's placeholder
+!uploads/01_RAHMAN_SAEM/PUT_FILES_HERE.txt
+
+# Filled spreadsheets with real student data (keep only the blank template)
+*_filled.xlsx
+students*.xlsx
+!Hanyang_Students_Template.xlsx
