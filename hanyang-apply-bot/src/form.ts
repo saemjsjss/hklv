@@ -1,7 +1,7 @@
 /**
- * The field map (spreadsheet key -> Korean form label) and the per-student fill
- * routine. Registration (등록정보) dropdowns are intentionally NOT here — the bot
- * leaves them as-is, per the agency's workflow.
+ * Field map (English portal labels) and the per-student fill routine. Labels are
+ * matched exactly against the form's row labels; `occurrence` disambiguates the
+ * ones that repeat across sections (E-mail: General/Agent; Name: Personal/Emergency).
  */
 import type { Locator, Page } from 'playwright';
 import { control, rowFor, selectByText } from './browser.js';
@@ -11,31 +11,58 @@ import { log } from './log.js';
 import type { FileField, FormField, Student } from './types.js';
 
 const FIELDS: FormField[] = [
-  { key: 'accountEmail', label: '이메일', kind: 'text' },
-  { key: 'studentEmail', label: '유학원 학생 이메일', kind: 'text' },
-  { key: 'givenName', label: '성명', kind: 'text', index: 0 },
-  { key: 'familyName', label: '성명', kind: 'text', index: 1 },
-  { key: 'gender', label: '성별', kind: 'select' },
-  { key: 'nationality', label: '국적', kind: 'select' },
-  { key: 'dob', label: '생년월일', kind: 'date' },
-  { key: 'passportNo', label: '여권번호', kind: 'text', index: 0 },
-  { key: 'homeCountryAddress', label: '본국주소', kind: 'text' },
-  { key: 'addressKorea', label: '한국 내 주소', kind: 'text' },
-  { key: 'homeCountryPhone', label: '본국 전화번호', kind: 'text' },
+  // General Information
+  { key: 'accountEmail', label: 'E-mail', kind: 'text', occurrence: 0 },
+  // Registration Information
+  { key: 'semesters', label: 'Number of Semester Applying', kind: 'select' },
+  { key: 'classTime', label: 'Prefered Class Time for the first semester', kind: 'select' },
+  { key: 'levelTest', label: 'Level Test Participation', kind: 'select' },
+  { key: 'preKorean', label: 'Applying for Pre-Korean Class', kind: 'select' },
+  { key: 'dormitory', label: 'Whether apply for the dormitory or not', kind: 'select' },
+  { key: 'payment', label: 'How to pay the tuition and the dormitory fee', kind: 'select' },
+  // Personal Details
+  { key: 'studentEmail', label: 'student email address', kind: 'text' },
+  { key: 'givenName', label: 'Name', kind: 'text', occurrence: 0, index: 0 },
+  { key: 'familyName', label: 'Name', kind: 'text', occurrence: 0, index: 1 },
+  { key: 'gender', label: 'Gender', kind: 'select' },
+  { key: 'nationality', label: 'Nationality', kind: 'select' },
+  { key: 'dob', label: 'Date of Birth', kind: 'date' },
+  { key: 'passportNo', label: 'Passport Number', kind: 'text', index: 0 },
+  { key: 'homeCountryAddress', label: 'Address in Home Country', kind: 'text' },
+  { key: 'addressKorea', label: 'Address in Korea', kind: 'text' },
+  { key: 'homeCountryPhone', label: 'Phone Number in Home Country', kind: 'text' },
   { key: 'messengerType', label: 'Kakao/Wechat/Line', kind: 'select' },
   { key: 'messengerId', label: 'Kakao/Wechat/Line', kind: 'text' },
-  { key: 'mobileKR', label: '내 전화번호', kind: 'phone3' },
-  { key: 'hanyangId', label: '한양대학교 학번', kind: 'text' },
-  { key: 'prefLanguage', label: '선호언어', kind: 'select' },
-  { key: 'schoolName', label: '출신학교명', kind: 'text' },
-  { key: 'eduCompletionDate', label: '최종학력취득일', kind: 'date' },
-  { key: 'highestEdu', label: '최종취득학력', kind: 'select' },
-  { key: 'visaApplying', label: '어학연수 비자 신청여부', kind: 'select' },
-  { key: 'visaType', label: '비자구분', kind: 'select' },
-  { key: 'visaNo', label: '비자번호', kind: 'text' },
-  { key: 'visaExpiry', label: '비자만료일', kind: 'date' },
-  { key: 'homeAddress', label: '자택주소', kind: 'text' },
-  { key: 'homeLandline', label: '자택전화번호', kind: 'text' },
+  { key: 'mobileKR', label: 'Phone Number in Korea', kind: 'phone3' },
+  { key: 'hanyangId', label: 'Hanyang University Student Number', kind: 'text' },
+  { key: 'prefLanguage', label: 'Preferred Language', kind: 'select' },
+  // Highest Level of Education Completed
+  { key: 'schoolName', label: 'Name of the School graduated', kind: 'text' },
+  { key: 'eduCompletionDate', label: 'Date of degree obtained', kind: 'date' },
+  { key: 'highestEdu', label: 'Highest level of Education Achieved', kind: 'select' },
+  // VISA application
+  { key: 'visaApplying', label: 'Applying for Student D-4 VISA', kind: 'select' },
+  { key: 'visaStatus', label: 'VISA status', kind: 'select' },
+  { key: 'visaNo', label: 'VISA number', kind: 'text' },
+  { key: 'visaExpiry', label: 'VISA expiring date', kind: 'date' },
+  // Korean Learning Experience
+  { key: 'learningExp', label: 'Learning Experience', kind: 'select' },
+  { key: 'instituteName', label: 'Name of Institute', kind: 'text' },
+  { key: 'studyPeriod', label: 'Period of Study', kind: 'text' },
+  { key: 'completedLevel', label: 'Completed Level', kind: 'text' },
+  { key: 'textbookName', label: 'Name of Textbook', kind: 'text' },
+  // Study Plan (choices)
+  { key: 'purposeOfStudy', label: 'Purpose of Study', kind: 'select' },
+  { key: 'aimingLevel', label: 'Aiming Level to Achieve', kind: 'select' },
+  { key: 'estimatedPeriod', label: 'Estimated period of enrollemnt at Hanyang University IIE', kind: 'select' },
+  // Emergency Contact Details
+  { key: 'emergencyName', label: 'Name', kind: 'text', occurrence: 1, index: 0 },
+  { key: 'emergencyRelation', label: 'Relation to the Applicant', kind: 'text' },
+  { key: 'emergencyContact', label: 'Contact', kind: 'text' },
+  // Agent Information
+  { key: 'agentCompany', label: 'Name of Company', kind: 'text' },
+  { key: 'agentPhone', label: 'Phone Number', kind: 'text' },
+  { key: 'agentEmail', label: 'E-mail', kind: 'text', occurrence: 1 },
 ];
 
 const REQUIRED = new Set([
@@ -44,10 +71,13 @@ const REQUIRED = new Set([
 ]);
 
 const FILES: FileField[] = [
-  { label: '사진', base: 'photo' },
-  { label: '여권파일', base: 'passport' },
-  { label: '최종학력서류', base: 'education' },
-  { label: '공백기 증명', base: 'gap' },
+  { label: 'Photo', base: 'photo' },
+  { label: 'Passport file', base: 'passport' },
+  { label: 'Proof of gap period', base: 'gap' },
+  { label: 'Documents of the last degree achieved', base: 'education' },
+  { label: 'Financial Statement', base: 'financial' },
+  { label: 'Family Relationship documents', base: 'family' },
+  { label: 'Other documents', base: 'other' },
 ];
 
 const norm = (s: string) => s.replace(/\s+/g, '');
@@ -56,7 +86,6 @@ async function setText(loc: Locator, value: string): Promise<void> {
   try {
     await loc.fill(value);
   } catch {
-    // Read-only / picker-backed input: set the value directly and notify.
     await loc.evaluate((el, v) => {
       (el as HTMLInputElement).value = v as string;
       el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -65,9 +94,9 @@ async function setText(loc: Locator, value: string): Promise<void> {
   }
 }
 
-/** Pick the 지원과정 radio matching the course text (else the first radio). */
+/** Pick the "Applying Course" radio matching the course text (else the first). */
 async function selectCourse(page: Page, text: string): Promise<boolean> {
-  const radios = (await rowFor(page, '지원과정')).locator('input[type="radio"]');
+  const radios = (await rowFor(page, 'Applying Course')).locator('input[type="radio"]');
   const n = await radios.count();
   if (n === 0) return false;
   if (text) {
@@ -88,7 +117,7 @@ async function selectCourse(page: Page, text: string): Promise<boolean> {
 
 async function fillPhone3(page: Page, value: string): Promise<boolean> {
   const parts = value.split(/\D+/).filter(Boolean);
-  const inputs = (await rowFor(page, '내 전화번호')).locator(
+  const inputs = (await rowFor(page, 'Phone Number in Korea')).locator(
     'input[type="text"], input[type="tel"], input[type="number"], input:not([type])',
   );
   const n = await inputs.count();
@@ -115,20 +144,15 @@ export async function fillStudent(
     (required ? log.warn : log.info)('   ', msg);
   };
 
-  // Course radio.
-  if (s.applyCourse && !(await selectCourse(page, s.applyCourse))) {
-    miss('지원과정 radio not found', true);
-  }
+  if (s.applyCourse && !(await selectCourse(page, s.applyCourse))) miss('Applying Course radio not found', true);
 
-  // Password (+ confirm). Generate a compliant one if the sheet left it blank.
   if (!s.password) s.password = generatePassword();
-  for (const label of ['비밀번호', '비밀번호(체크)']) {
+  for (const label of ['Password', 'Password(check)']) {
     const loc = await control(page, label, 'text');
     if (loc) await setText(loc, s.password);
     else miss(`${label} field not found`);
   }
 
-  // Straightforward fields.
   for (const f of FIELDS) {
     const value = String(s[f.key] ?? '').trim();
     if (!value) {
@@ -139,7 +163,7 @@ export async function fillStudent(
       if (!(await fillPhone3(page, value))) miss(`${f.label} inputs not found`);
       continue;
     }
-    const loc = await control(page, f.label, f.kind === 'date' ? 'date' : (f.kind as any), f.index ?? 0);
+    const loc = await control(page, f.label, f.kind === 'date' ? 'date' : (f.kind as any), f.index ?? 0, f.occurrence ?? 0);
     if (!loc) {
       miss(`${f.label} control not found`, REQUIRED.has(f.key));
       continue;
@@ -151,17 +175,23 @@ export async function fillStudent(
     }
   }
 
-  // "No passport" checkbox.
-  if (/^(yes|y|true|1|없음)$/i.test(s.noPassport)) {
-    const box = await control(page, '여권번호', 'checkbox');
+  // "No Passport Number" checkbox.
+  if (/^(yes|y|true|1)$/i.test(s.noPassport)) {
+    const box = await control(page, 'Passport Number', 'checkbox');
     if (box) await box.check();
-    else miss('여권번호 없음 checkbox not found');
+    else miss('No Passport Number checkbox not found');
   }
+
+  // Statements (two big text areas, in document order: Personal Statement, Study Plan).
+  const areas = page.locator('textarea');
+  const na = await areas.count();
+  if (s.personalStatement && na >= 1) await setText(areas.nth(0), s.personalStatement);
+  if (s.studyPlanText && na >= 2) await setText(areas.nth(1), s.studyPlanText);
 
   // Uploads from the student's folder.
   for (const file of FILES) {
     const path = resolveUpload(uploadsDir, s.folder, file.base);
-    if (!path) continue; // optional; absence is fine
+    if (!path) continue;
     const input = await control(page, file.label, 'file');
     if (input) await input.setInputFiles(path);
     else miss(`${file.label} upload input not found (have ${file.base})`);

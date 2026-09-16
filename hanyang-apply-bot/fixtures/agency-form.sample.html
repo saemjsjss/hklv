@@ -1,87 +1,111 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>한양대학교 국제교육원 원서접수시스템 (fixture)</title>
+  <title>Hanyang University IIE application submission system (fixture)</title>
   <style>
     body { font-family: sans-serif; margin: 24px; }
     table { border-collapse: collapse; margin-top: 8px; }
-    th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+    th, td { border: 1px solid #ccc; padding: 5px 9px; text-align: left; }
     th { background: #f3f3f3; white-space: nowrap; }
     .hidden { display: none; }
-    h2 { font-size: 16px; }
+    h2 { font-size: 15px; margin-top: 14px; }
   </style>
 </head>
 <body>
-  <h1>한양대학교 국제교육원 원서접수시스템</h1>
+  <h1>Hanyang University IIE application submission system</h1>
+  <p>한국어 | <a href="#" onclick="return false">English</a> | 汉语 | 日本語</p>
 
-  <!-- Landing -->
   <div id="landing">
-    <button type="button" onclick="show('consent')">지원안내</button>
-    <button type="button" onclick="show('consent')">지원서작성</button>
-    <button type="button" onclick="show('consent')">지원서수정</button>
-    <button type="button" onclick="show('consent')">지원현황</button>
+    <button type="button" onclick="show('consent')">Registration Information</button>
+    <button type="button" onclick="show('consent')">Application</button>
+    <button type="button" onclick="show('consent')">Edit Application</button>
+    <button type="button" onclick="show('consent')">Application Status</button>
   </div>
 
-  <!-- Consent -->
   <div id="consent" class="hidden">
-    <h2>개인정보 수집·이용 및 제공 동의서</h2>
+    <h2>Hanyang University IIE Application Privacy Policy</h2>
     <table>
-      <tr>
-        <th>필수정보</th>
-        <td>동의함 <input type="checkbox" id="agree" /></td>
-        <td>동의하지 않음 <input type="checkbox" /></td>
-      </tr>
+      <tr><th>Required information</th><td>Agree <input type="checkbox" id="agree" /></td><td>Disagree <input type="checkbox" /></td></tr>
     </table>
-    <p><button type="button" onclick="toForm()">다음</button></p>
+    <p><button type="button" onclick="toForm()">Next(下一个)</button></p>
   </div>
 
-  <!-- Study Agency Insert Mode form -->
   <div id="form" class="hidden">
     <h2>Study Agency Insert Mode</h2>
     <table>
-      <tr><th>지원과정</th><td><label><input type="radio" name="course" /> 2026 겨울학기 한국어과정(02)</label></td></tr>
-      <tr><th>이메일</th><td><input type="text" /></td></tr>
-      <tr><th>비밀번호</th><td><input type="text" /></td></tr>
-      <tr><th>비밀번호(체크)</th><td><input type="text" /></td></tr>
+      <tr><th>Applying Course</th><td><label><input type="radio" name="course" /> 2026 Winter Korean Language and culture(02)</label></td></tr>
+      <tr><th>E-mail</th><td><input type="text" /></td></tr>
+      <tr><th>Password</th><td><input type="text" /></td></tr>
+      <tr><th>Password(check)</th><td><input type="text" /></td></tr>
 
-      <!-- Registration block — the bot must leave these AS-IS -->
-      <tr><th>등록학기수</th><td><select><option value="">선택</option><option>1</option><option>2</option></select></td></tr>
+      <tr><th>Number of Semester Applying</th><td><select><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></td></tr>
+      <tr><th>Prefered Class Time for the first semester</th><td><select><option value="">Select</option><option>Morning Class (09:00~13:00) (might not be applied. First-come, first served basis)</option><option>Afternoon Class (14:00~18:00)</option><option>Don't Mind (Automatically assigned to the afternoon half.)</option></select></td></tr>
+      <tr><th>Level Test Participation</th><td><select><option value="">Select</option><option>Participate</option><option>Don't participate (direct placement into Level 1)</option></select></td></tr>
+      <tr><th>Applying for Pre-Korean Class</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>Whether apply for the dormitory or not</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>How to pay the tuition and the dormitory fee</th><td><select><option value="">Select</option><option>Lump-sum payment</option><option>Installment</option></select></td></tr>
 
-      <tr><th>유학원 학생 이메일</th><td><input type="text" /></td></tr>
-      <tr><th>성명</th><td>이름 <input type="text" /> 성 <input type="text" /></td></tr>
-      <tr><th>성별</th><td><select><option value="">선택</option><option>Male</option><option>Female</option></select></td></tr>
-      <tr><th>국적</th><td><select><option value="">Select</option><option>Bangladesh</option><option>India</option></select></td></tr>
-      <tr><th>생년월일</th><td><input type="text" /></td></tr>
-      <tr><th>여권번호</th><td><input type="text" /> 여권번호 없음 <input type="checkbox" /></td></tr>
-      <tr><th>여권파일</th><td><input type="file" /></td></tr>
-      <tr><th>본국주소</th><td><input type="text" /></td></tr>
-      <tr><th>한국 내 주소</th><td><input type="text" /></td></tr>
-      <tr><th>본국 전화번호</th><td><input type="text" /></td></tr>
-      <tr><th>Kakao/Wechat/Line</th><td><select><option value="">선택</option><option>Kakao</option><option>Wechat</option><option>Line</option></select> <input type="text" /></td></tr>
-      <tr><th>내 전화번호</th><td><input type="text" /> - <input type="text" /> - <input type="text" /></td></tr>
-      <tr><th>한양대학교 학번</th><td><input type="text" /></td></tr>
-      <tr><th>선호언어</th><td><select><option value="">선택</option><option>Korean</option><option>English</option></select></td></tr>
-      <tr><th>사진</th><td><input type="file" /> * JPEG ONLY(20KB or less)</td></tr>
-      <tr><th>출신학교명</th><td><input type="text" /></td></tr>
-      <tr><th>최종학력취득일</th><td><input type="text" /></td></tr>
-      <tr><th>최종취득학력</th><td><select><option value="">선택</option><option>High school diploma</option><option>Bachelor's degree</option></select></td></tr>
-      <tr><th>최종학력서류</th><td><input type="file" /></td></tr>
-      <tr><th>공백기 증명</th><td><input type="file" /></td></tr>
-      <tr><th>어학연수 비자 신청여부</th><td><select><option value="">선택</option><option>YES</option><option>NO</option></select></td></tr>
-      <tr><th>비자구분</th><td><select><option value="">선택</option><option>D-4 (language training)</option><option>D-2 (degree)</option></select></td></tr>
-      <tr><th>비자번호</th><td><input type="text" /></td></tr>
-      <tr><th>비자만료일</th><td><input type="text" /></td></tr>
-      <tr><th>자택주소</th><td><input type="text" /></td></tr>
-      <tr><th>자택전화번호</th><td><input type="text" /></td></tr>
+      <tr><th>Photo</th><td><input type="file" /></td></tr>
+      <tr><th>student email address</th><td><input type="text" /></td></tr>
+      <tr><th>Name</th><td>First Name <input type="text" /> Last Name <input type="text" /></td></tr>
+      <tr><th>Gender</th><td><select><option value="">Select</option><option>Male</option><option>Female</option></select></td></tr>
+      <tr><th>Nationality</th><td><select><option value="">Select</option><option>Bangladesh</option><option>India</option></select></td></tr>
+      <tr><th>Date of Birth</th><td><input type="text" /></td></tr>
+      <tr><th>Passport Number</th><td><input type="text" /> No Passport Number <input type="checkbox" /></td></tr>
+      <tr><th>Passport file</th><td><input type="file" /></td></tr>
+      <tr><th>Address in Home Country</th><td><input type="text" /></td></tr>
+      <tr><th>Address in Korea</th><td><input type="text" /></td></tr>
+      <tr><th>Phone Number in Home Country</th><td><input type="text" /></td></tr>
+      <tr><th>Kakao/Wechat/Line</th><td><select><option value="">Select</option><option>Kakao</option><option>Wechat</option><option>Line</option></select> <input type="text" /></td></tr>
+      <tr><th>Phone Number in Korea</th><td><input type="text" /> - <input type="text" /> - <input type="text" /></td></tr>
+      <tr><th>Hanyang University Student Number</th><td><input type="text" /></td></tr>
+      <tr><th>Preferred Language</th><td><select><option value="">Select</option><option>Korean</option><option>English</option></select></td></tr>
+
+      <tr><th>Name of the School graduated</th><td><input type="text" /></td></tr>
+      <tr><th>Date of degree obtained</th><td><input type="text" /></td></tr>
+      <tr><th>Highest level of Education Achieved</th><td><select><option value="">Select</option><option>Undergraduate</option><option>Postgraduate or Higher</option><option>High School</option></select></td></tr>
+      <tr><th>Proof of gap period</th><td><input type="file" /></td></tr>
+      <tr><th>Documents of the last degree achieved</th><td><input type="file" /></td></tr>
+
+      <tr><th>Applying for Student D-4 VISA</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>VISA status</th><td><select><option value="">Select</option><option>Applied</option><option>Issued</option></select></td></tr>
+      <tr><th>VISA number</th><td><input type="text" /></td></tr>
+      <tr><th>VISA expiring date</th><td><input type="text" /></td></tr>
+
+      <tr><th>Learning Experience</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>Name of Institute</th><td><input type="text" /></td></tr>
+      <tr><th>Period of Study</th><td><input type="text" /></td></tr>
+      <tr><th>Completed Level</th><td><input type="text" /></td></tr>
+      <tr><th>Name of Textbook</th><td><input type="text" /></td></tr>
+
+      <tr><th>Purpose of Study</th><td><select><option value="">Select</option><option>Enter a university</option><option>Employment</option><option>Interest / Culture</option></select></td></tr>
+      <tr><th>Aiming Level to Achieve</th><td><select><option value="">Select</option><option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Level 4</option><option>Level 5</option><option>Level 6</option></select></td></tr>
+      <tr><th>Estimated period of enrollemnt at Hanyang University IIE</th><td><select><option value="">Select</option><option>1 semester</option><option>2 semesters</option><option>3 semesters</option><option>4 semesters</option></select></td></tr>
+
+      <tr><th>Name</th><td><input type="text" /></td></tr>
+      <tr><th>Relation to the Applicant</th><td><input type="text" /></td></tr>
+      <tr><th>Contact</th><td><input type="text" /></td></tr>
+
+      <tr><th>Name of Company</th><td><input type="text" /></td></tr>
+      <tr><th>Phone Number</th><td><input type="text" /></td></tr>
+      <tr><th>E-mail</th><td><input type="text" /></td></tr>
+
+      <tr><th>Financial Statement</th><td><input type="file" /></td></tr>
+      <tr><th>Family Relationship documents</th><td><input type="file" /></td></tr>
+
+      <tr><th>Personal Statement</th><td><textarea rows="3" cols="40"></textarea></td></tr>
+      <tr><th>Study Plan</th><td><textarea rows="3" cols="40"></textarea></td></tr>
+
+      <tr><th>Other documents</th><td><input type="file" /></td></tr>
     </table>
-    <p><button type="button">저장</button></p>
+    <p><button type="button">Save</button></p>
   </div>
 
   <script>
     function show(id) { document.getElementById('landing').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); }
     function toForm() {
-      if (!document.getElementById('agree').checked) { alert('필수정보에 동의해 주세요.'); return; }
+      if (!document.getElementById('agree').checked) { alert('Please agree to the required information.'); return; }
       document.getElementById('consent').classList.add('hidden');
       document.getElementById('form').classList.remove('hidden');
     }

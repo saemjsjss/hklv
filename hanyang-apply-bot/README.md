@@ -81,20 +81,21 @@ bundled Chromium, submit on/off, `HY_ONLY` / `HY_LIMIT` filters, etc.
 code and asserts every field lands (no network, no credentials). Use it after
 any change.
 
-## To finalize against the live form
+The bot drives the **English** portal: it switches to English, clicks
+**Application**, ticks **Agree** on the consent screen, clicks **Next**, then
+fills the whole form. Run the portal yourself in English when checking it.
 
-Run **`PROBE_FORM.bat`** with the portal in **English** — it saves
-`output/form.html` with every field label, dropdown option, and button text.
-Send me `form.html` and I'll:
-- replace the `(confirm)` option lists (Level Test, Payment, Purpose, Estimated
-  Period, VISA status) and the Nationality list with the portal's exact text, and
-- wire the bot's field map to fill **all** the portal's sections (the reader and
-  template already cover them; the fill map is being extended to the full English
-  form and the newer sections next).
+## To confirm against the live form
+
+Most fields are pinned to the portal's exact English labels. A few dropdown
+option texts are still best guesses (Level Test, Tuition Payment, Purpose of
+Study, Estimated Period, VISA status) and the full Nationality list is unknown.
+`RUN_TEST_ONE.bat` logs any `no option matching …`; to pin them all at once run
+**`PROBE_FORM.bat`** (in English) and send me `output/form.html`.
 
 ## Status
 
-- [x] Spreadsheet template mirrors the whole portal (49 fields) + 7-file upload convention
-- [x] Reader parses all sections; offline self-test green (30/30)
-- [x] Bot: Chrome automation, batch runner — fills the core fields today
-- [ ] Extend the fill map to every section + exact dropdown text (from `form.html`)
+- [x] Spreadsheet mirrors the whole portal (49 fields) + 7-file upload convention
+- [x] Bot fills the whole English form end-to-end (all sections, repeated labels,
+      text areas, uploads); offline self-test green (42/42)
+- [ ] Confirm the few best-guess dropdown texts + Nationality list against the live form

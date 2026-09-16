@@ -54,10 +54,14 @@ export async function launch(opts: {
   return { browser, context, page };
 }
 
-/** The nearest form row for an exact label: the closest `<tr>`, else the label's parent. */
-export async function rowFor(page: Page, label: string): Promise<Locator> {
+/**
+ * The nearest form row for an exact label: the closest `<tr>`, else the label's
+ * parent. `occurrence` selects among rows that share a label (e.g. "E-mail"
+ * appears under both General and Agent; "Name" under Personal and Emergency).
+ */
+export async function rowFor(page: Page, label: string, occurrence = 0): Promise<Locator> {
   const re = new RegExp(`^\\s*${escapeRe(label)}\\s*$`);
-  const cell = page.locator('th, td, label, dt').filter({ hasText: re }).first();
+  const cell = page.locator('th, td, label, dt').filter({ hasText: re }).nth(occurrence);
   const tr = cell.locator('xpath=ancestor-or-self::tr[1]');
   if ((await tr.count()) > 0) return tr.first();
   return cell.locator('xpath=..'); // div/li layout fallback
@@ -69,8 +73,9 @@ export async function control(
   label: string,
   kind: keyof typeof CTRL,
   index = 0,
+  occurrence = 0,
 ): Promise<Locator | undefined> {
-  const row = await rowFor(page, label);
+  const row = await rowFor(page, label, occurrence);
   if ((await row.count()) === 0) return undefined;
   const all = row.locator(CTRL[kind]);
   const n = await all.count();

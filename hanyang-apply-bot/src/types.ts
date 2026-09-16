@@ -73,6 +73,8 @@ export interface FormField {
   kind: FieldKind;
   /** Which control in the row when a row has several (0-based). */
   index?: number;
+  /** Which row when several share the label (e.g. "E-mail", "Name"). */
+  occurrence?: number;
 }
 
 /** A file upload: standard filename base in the student's folder -> form label. */
