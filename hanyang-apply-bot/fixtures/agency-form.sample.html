@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>한양대학교 국제교육원 원서접수시스템 (fixture)</title>
+  <style>
+    body { font-family: sans-serif; margin: 24px; }
+    table { border-collapse: collapse; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+    th { background: #f3f3f3; white-space: nowrap; }
+    .hidden { display: none; }
+    h2 { font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>한양대학교 국제교육원 원서접수시스템</h1>
+
+  <!-- Landing -->
+  <div id="landing">
+    <button type="button" onclick="show('consent')">지원안내</button>
+    <button type="button" onclick="show('consent')">지원서작성</button>
+    <button type="button" onclick="show('consent')">지원서수정</button>
+    <button type="button" onclick="show('consent')">지원현황</button>
+  </div>
+
+  <!-- Consent -->
+  <div id="consent" class="hidden">
+    <h2>개인정보 수집·이용 및 제공 동의서</h2>
+    <table>
+      <tr>
+        <th>필수정보</th>
+        <td>동의함 <input type="checkbox" id="agree" /></td>
+        <td>동의하지 않음 <input type="checkbox" /></td>
+      </tr>
+    </table>
+    <p><button type="button" onclick="toForm()">다음</button></p>
+  </div>
+
+  <!-- Study Agency Insert Mode form -->
+  <div id="form" class="hidden">
+    <h2>Study Agency Insert Mode</h2>
+    <table>
+      <tr><th>지원과정</th><td><label><input type="radio" name="course" /> 2026 겨울학기 한국어과정(02)</label></td></tr>
+      <tr><th>이메일</th><td><input type="text" /></td></tr>
+      <tr><th>비밀번호</th><td><input type="text" /></td></tr>
+      <tr><th>비밀번호(체크)</th><td><input type="text" /></td></tr>
+
+      <!-- Registration block — the bot must leave these AS-IS -->
+      <tr><th>등록학기수</th><td><select><option value="">선택</option><option>1</option><option>2</option></select></td></tr>
+
+      <tr><th>유학원 학생 이메일</th><td><input type="text" /></td></tr>
+      <tr><th>성명</th><td>이름 <input type="text" /> 성 <input type="text" /></td></tr>
+      <tr><th>성별</th><td><select><option value="">선택</option><option>Male</option><option>Female</option></select></td></tr>
+      <tr><th>국적</th><td><select><option value="">Select</option><option>Bangladesh</option><option>India</option></select></td></tr>
+      <tr><th>생년월일</th><td><input type="text" /></td></tr>
+      <tr><th>여권번호</th><td><input type="text" /> 여권번호 없음 <input type="checkbox" /></td></tr>
+      <tr><th>여권파일</th><td><input type="file" /></td></tr>
+      <tr><th>본국주소</th><td><input type="text" /></td></tr>
+      <tr><th>한국 내 주소</th><td><input type="text" /></td></tr>
+      <tr><th>본국 전화번호</th><td><input type="text" /></td></tr>
+      <tr><th>Kakao/Wechat/Line</th><td><select><option value="">선택</option><option>Kakao</option><option>Wechat</option><option>Line</option></select> <input type="text" /></td></tr>
+      <tr><th>내 전화번호</th><td><input type="text" /> - <input type="text" /> - <input type="text" /></td></tr>
+      <tr><th>한양대학교 학번</th><td><input type="text" /></td></tr>
+      <tr><th>선호언어</th><td><select><option value="">선택</option><option>Korean</option><option>English</option></select></td></tr>
+      <tr><th>사진</th><td><input type="file" /> * JPEG ONLY(20KB or less)</td></tr>
+      <tr><th>출신학교명</th><td><input type="text" /></td></tr>
+      <tr><th>최종학력취득일</th><td><input type="text" /></td></tr>
+      <tr><th>최종취득학력</th><td><select><option value="">선택</option><option>High school diploma</option><option>Bachelor's degree</option></select></td></tr>
+      <tr><th>최종학력서류</th><td><input type="file" /></td></tr>
+      <tr><th>공백기 증명</th><td><input type="file" /></td></tr>
+      <tr><th>어학연수 비자 신청여부</th><td><select><option value="">선택</option><option>YES</option><option>NO</option></select></td></tr>
+      <tr><th>비자구분</th><td><select><option value="">선택</option><option>D-4 (language training)</option><option>D-2 (degree)</option></select></td></tr>
+      <tr><th>비자번호</th><td><input type="text" /></td></tr>
+      <tr><th>비자만료일</th><td><input type="text" /></td></tr>
+      <tr><th>자택주소</th><td><input type="text" /></td></tr>
+      <tr><th>자택전화번호</th><td><input type="text" /></td></tr>
+    </table>
+    <p><button type="button">저장</button></p>
+  </div>
+
+  <script>
+    function show(id) { document.getElementById('landing').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); }
+    function toForm() {
+      if (!document.getElementById('agree').checked) { alert('필수정보에 동의해 주세요.'); return; }
+      document.getElementById('consent').classList.add('hidden');
+      document.getElementById('form').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
