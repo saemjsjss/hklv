@@ -48,15 +48,25 @@ async function main(): Promise<void> {
   const templatePath = resolve(cwd, 'Hanyang_Students_Template.xlsx');
   const fixture = pathToFileURL(resolve(cwd, 'fixtures/agency-form.sample.html')).href;
 
-  // Use the template's sample row (row 3) as the test student — exercises the reader.
-  let student: Student;
+  // Reader smoke-check against the real 49-column template.
   try {
-    student = readStudents(templatePath, 3)[0];
-    log.info(`Read sample student from template: ${student.givenName} ${student.familyName} (${student.folder})`);
+    const parsed = readStudents(templatePath, 3);
+    const s0 = parsed[0];
+    const ok = parsed.length >= 1 && !!(s0 && s0.studentEmail && s0.semesters && s0.agentCompany && s0.personalStatement);
+    if (ok) {
+      pass++;
+      log.ok(`reader parsed template: ${parsed.length} row(s), new columns mapped (semesters=${s0.semesters})`);
+    } else {
+      fail++;
+      log.error(`reader parse incomplete: ${JSON.stringify(s0)}`);
+    }
   } catch (err) {
-    log.warn(`Could not read template (${(err as Error).message}); using a built-in sample.`);
-    student = { rowNum: 3, applyCourse: '2026 겨울학기 한국어과정(02)', accountEmail: 'hy.saem01@example.com', password: 'Abc12345!@', folder: '01_RAHMAN_SAEM', studentEmail: 'saem.rahman@example.com', givenName: 'SAEM', familyName: 'RAHMAN', gender: 'Male', nationality: 'Bangladesh', dob: '1999-05-15', passportNo: 'A01234567', noPassport: '', homeCountryAddress: 'Dhaka', addressKorea: '', homeCountryPhone: '+8801712345678', messengerType: 'Kakao', messengerId: 'saem_kakao', mobileKR: '010-1234-5678', hanyangId: '', prefLanguage: 'Korean', schoolName: 'Dhaka College', eduCompletionDate: '2018-05-30', highestEdu: 'High school diploma', visaApplying: 'YES', visaType: 'D-4 (language training)', visaNo: 'C123456789', visaExpiry: '2027-06-30', homeAddress: '', homeLandline: '02-9876543' } as Student;
+    fail++;
+    log.error(`reader threw: ${(err as Error).message}`);
   }
+
+  // Fixed test student for the browser fill test (matches the Korean fixture).
+  const student = { rowNum: 3, applyCourse: '2026 겨울학기 한국어과정(02)', accountEmail: 'hy.saem01@example.com', password: 'Abc12345!@', folder: '01_RAHMAN_SAEM', studentEmail: 'saem.rahman@example.com', givenName: 'SAEM', familyName: 'RAHMAN', gender: 'Male', nationality: 'Bangladesh', dob: '1999-05-15', passportNo: 'A01234567', noPassport: '', homeCountryAddress: 'House 12, Road 5, Dhanmondi, Dhaka', addressKorea: '서울특별시 성동구 왕십리로 222', homeCountryPhone: '+8801712345678', messengerType: 'Kakao', messengerId: 'saem_kakao', mobileKR: '010-1234-5678', hanyangId: '', prefLanguage: 'Korean', schoolName: 'Dhaka College', eduCompletionDate: '2018-05-30', highestEdu: 'High school diploma', visaApplying: 'YES', visaType: 'D-4 (language training)', visaNo: 'C123456789', visaExpiry: '2027-06-30' } as unknown as Student;
 
   // Dummy per-student upload folder.
   const uploadsDir = mkdtempSync(join(tmpdir(), 'hy-upl-'));

@@ -1,51 +1,68 @@
 /**
  * Read students from the Excel template's "Students" sheet.
  *
- * Row 1 = section bands, row 2 = headers (bilingual "English\nKorean"), row 3 =
- * sample, real data from `dataStart` (row 4). Columns are matched by the Korean
- * part of each header, so reordering or extra columns are tolerated.
+ * Row 1 = section bands, row 2 = headers, row 3 = sample, real data from
+ * `dataStart` (row 4). Columns are matched by their English header, so reordering
+ * or extra columns are tolerated.
  */
 import { readFileSync } from 'node:fs';
 import * as XLSX from 'xlsx';
 import type { Student } from './types.js';
 
-/** Korean header label -> Student key, matching the generated template. */
-const TEMPLATE_COLS: { key: keyof Student; ko: string }[] = [
-  { key: 'applyCourse', ko: '지원과정' },
-  { key: 'accountEmail', ko: '이메일' },
-  { key: 'password', ko: '비밀번호' },
-  { key: 'folder', ko: '파일 폴더명' },
-  { key: 'studentEmail', ko: '유학원 학생 이메일' },
-  { key: 'givenName', ko: '이름' },
-  { key: 'familyName', ko: '성' },
-  { key: 'gender', ko: '성별' },
-  { key: 'nationality', ko: '국적' },
-  { key: 'dob', ko: '생년월일' },
-  { key: 'passportNo', ko: '여권번호' },
-  { key: 'noPassport', ko: '여권번호 없음' },
-  { key: 'homeCountryAddress', ko: '본국주소' },
-  { key: 'addressKorea', ko: '한국 내 주소' },
-  { key: 'homeCountryPhone', ko: '본국 전화번호' },
-  { key: 'messengerType', ko: 'Kakao/Wechat/Line' },
-  { key: 'messengerId', ko: '메신저 아이디' },
-  { key: 'mobileKR', ko: '내 전화번호' },
-  { key: 'hanyangId', ko: '한양대학교 학번' },
-  { key: 'prefLanguage', ko: '선호언어' },
-  { key: 'schoolName', ko: '출신학교명' },
-  { key: 'eduCompletionDate', ko: '최종학력취득일' },
-  { key: 'highestEdu', ko: '최종취득학력' },
-  { key: 'visaApplying', ko: '어학연수 비자 신청여부' },
-  { key: 'visaType', ko: '비자구분' },
-  { key: 'visaNo', ko: '비자번호' },
-  { key: 'visaExpiry', ko: '비자만료일' },
-  { key: 'homeAddress', ko: '자택주소' },
-  { key: 'homeLandline', ko: '자택전화번호' },
+/** English header (row 2, minus the ★) -> Student key, matching the template. */
+const TEMPLATE_COLS: { key: keyof Student; hdr: string }[] = [
+  { key: 'applyCourse', hdr: 'Applying Course' },
+  { key: 'accountEmail', hdr: 'E-mail' },
+  { key: 'password', hdr: 'Password' },
+  { key: 'semesters', hdr: 'Number of Semester Applying' },
+  { key: 'classTime', hdr: 'Prefered Class Time' },
+  { key: 'levelTest', hdr: 'Level Test Participation' },
+  { key: 'preKorean', hdr: 'Applying for Pre-Korean Class' },
+  { key: 'dormitory', hdr: 'Apply for Dormitory' },
+  { key: 'payment', hdr: 'Tuition Payment Method' },
+  { key: 'folder', hdr: 'Student Folder' },
+  { key: 'studentEmail', hdr: 'Student Email Address' },
+  { key: 'givenName', hdr: 'First Name' },
+  { key: 'familyName', hdr: 'Last Name' },
+  { key: 'gender', hdr: 'Gender' },
+  { key: 'nationality', hdr: 'Nationality' },
+  { key: 'dob', hdr: 'Date of Birth' },
+  { key: 'passportNo', hdr: 'Passport Number' },
+  { key: 'noPassport', hdr: 'No Passport Number' },
+  { key: 'homeCountryAddress', hdr: 'Address in Home Country' },
+  { key: 'addressKorea', hdr: 'Address in Korea' },
+  { key: 'homeCountryPhone', hdr: 'Phone in Home Country' },
+  { key: 'messengerType', hdr: 'Kakao/Wechat/Line' },
+  { key: 'messengerId', hdr: 'Messenger ID' },
+  { key: 'mobileKR', hdr: 'Phone in Korea' },
+  { key: 'hanyangId', hdr: 'Hanyang Student Number' },
+  { key: 'prefLanguage', hdr: 'Preferred Language' },
+  { key: 'schoolName', hdr: 'School Graduated' },
+  { key: 'eduCompletionDate', hdr: 'Date of Degree Obtained' },
+  { key: 'highestEdu', hdr: 'Highest Education Level' },
+  { key: 'visaApplying', hdr: 'Applying for D-4 VISA' },
+  { key: 'visaStatus', hdr: 'VISA Status' },
+  { key: 'visaNo', hdr: 'VISA Number' },
+  { key: 'visaExpiry', hdr: 'VISA Expiring Date' },
+  { key: 'learningExp', hdr: 'Learning Experience' },
+  { key: 'instituteName', hdr: 'Name of Institute' },
+  { key: 'studyPeriod', hdr: 'Period of Study' },
+  { key: 'completedLevel', hdr: 'Completed Level' },
+  { key: 'textbookName', hdr: 'Name of Textbook' },
+  { key: 'purposeOfStudy', hdr: 'Purpose of Study' },
+  { key: 'aimingLevel', hdr: 'Aiming Level to Achieve' },
+  { key: 'estimatedPeriod', hdr: 'Estimated Enrollment Period' },
+  { key: 'emergencyName', hdr: 'Emergency Contact Name' },
+  { key: 'emergencyRelation', hdr: 'Relation to Applicant' },
+  { key: 'emergencyContact', hdr: 'Emergency Contact Number' },
+  { key: 'agentCompany', hdr: 'Agent Company Name' },
+  { key: 'agentPhone', hdr: 'Agent Phone Number' },
+  { key: 'agentEmail', hdr: 'Agent E-mail' },
+  { key: 'personalStatement', hdr: 'Personal Statement' },
+  { key: 'studyPlanText', hdr: 'Study Plan' },
 ];
 
-const koPart = (header: unknown): string => {
-  const parts = String(header ?? '').split('\n');
-  return (parts[parts.length - 1] ?? '').replace(/^[★*\s]+/, '').trim();
-};
+const headerText = (h: unknown): string => String(h ?? '').replace(/^[★*\s]+/, '').trim();
 
 const emptyStudent = (rowNum: number): Student =>
   Object.fromEntries(
@@ -61,8 +78,7 @@ export function readStudents(templatePath: string, dataStart: number): Student[]
   const header = rows[1] ?? []; // row 2
   const colOf = new Map<keyof Student, number>();
   header.forEach((h, j) => {
-    const ko = koPart(h);
-    const col = TEMPLATE_COLS.find((c) => c.ko === ko);
+    const col = TEMPLATE_COLS.find((c) => c.hdr === headerText(h));
     if (col && !colOf.has(col.key)) colOf.set(col.key, j);
   });
 
@@ -72,8 +88,7 @@ export function readStudents(templatePath: string, dataStart: number): Student[]
     if (!row) continue;
     const s = emptyStudent(i + 1);
     for (const [key, j] of colOf) s[key] = String(row[j] ?? '').trim();
-    // Skip blank rows: need at least an identifying value.
-    if (!s.studentEmail && !s.givenName && !s.familyName && !s.folder) continue;
+    if (!s.studentEmail && !s.givenName && !s.familyName && !s.folder) continue; // skip blanks
     out.push(s);
   }
   return out;

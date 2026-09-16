@@ -30,10 +30,17 @@ Runs in **Chrome (headed)** so you can watch it work.
 
    | File in the folder | Uploaded to | Notes |
    | --- | --- | --- |
-   | `photo.jpg` | 사진 | JPEG only, **20KB or less** |
-   | `passport.jpg` | 여권파일 | jpg or pdf |
-   | `education.pdf` | 최종학력서류 | final education document |
-   | `gap.pdf` | 공백기 증명 | gap-period proof, only if applicable |
+   | `photo.jpg` | Photo | JPEG only, **20KB or less** |
+   | `passport.jpg` | Passport file | jpg or pdf |
+   | `gap.pdf` | Proof of gap period | if applicable |
+   | `education.pdf` | Documents of the last degree | final education document |
+   | `financial.pdf` | Financial Statement | |
+   | `family.pdf` | Family Relationship documents | |
+   | `other.pdf` | Other documents | optional |
+
+The template mirrors the whole portal, section by section (General → Registration
+→ Personal → Education → VISA → Korean Learning Experience → Study Plan →
+Emergency Contact → Agent → Statements), with every dropdown as a column.
 
 ## How to run (Windows)
 
@@ -74,16 +81,20 @@ bundled Chromium, submit on/off, `HY_ONLY` / `HY_LIMIT` filters, etc.
 code and asserts every field lands (no network, no credentials). Use it after
 any change.
 
-## To confirm against the live form
+## To finalize against the live form
 
-Exact dropdown option text (Gender, 최종취득학력, 비자구분, 선호언어), the full 국적
-list, and the final submit button text (`HY_SUBMIT_TEXT`, default `저장`). The
-first `RUN_TEST_ONE.bat` against the live form will surface any mismatch — send
-me a saved copy of the page (Chrome → Save Page As → *Webpage, Complete*) and I
-lock them down.
+Run **`PROBE_FORM.bat`** with the portal in **English** — it saves
+`output/form.html` with every field label, dropdown option, and button text.
+Send me `form.html` and I'll:
+- replace the `(confirm)` option lists (Level Test, Payment, Purpose, Estimated
+  Period, VISA status) and the Nationality list with the portal's exact text, and
+- wire the bot's field map to fill **all** the portal's sections (the reader and
+  template already cover them; the fill map is being extended to the full English
+  form and the newer sections next).
 
 ## Status
 
-- [x] Student spreadsheet template + per-student upload convention
-- [x] Bot: Chrome automation of the flow, batch runner, offline self-test (29/29)
-- [ ] Field selectors / dropdown values verified against the live portal
+- [x] Spreadsheet template mirrors the whole portal (49 fields) + 7-file upload convention
+- [x] Reader parses all sections; offline self-test green (30/30)
+- [x] Bot: Chrome automation, batch runner — fills the core fields today
+- [ ] Extend the fill map to every section + exact dropdown text (from `form.html`)

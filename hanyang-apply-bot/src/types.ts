@@ -25,9 +25,39 @@ export interface Student {
   eduCompletionDate: string;
   highestEdu: string;
   visaApplying: string;
-  visaType: string;
+  visaStatus: string;
   visaNo: string;
   visaExpiry: string;
+  // Korean Learning Experience
+  learningExp: string;
+  instituteName: string;
+  studyPeriod: string;
+  completedLevel: string;
+  textbookName: string;
+  // Study Plan (choices)
+  purposeOfStudy: string;
+  aimingLevel: string;
+  estimatedPeriod: string;
+  // Emergency contact
+  emergencyName: string;
+  emergencyRelation: string;
+  emergencyContact: string;
+  // Agent
+  agentCompany: string;
+  agentPhone: string;
+  agentEmail: string;
+  // Statements
+  personalStatement: string;
+  studyPlanText: string;
+  // Registration
+  semesters: string;
+  classTime: string;
+  levelTest: string;
+  preKorean: string;
+  dormitory: string;
+  payment: string;
+  // legacy (kept for the Korean-fixture self-test)
+  visaType: string;
   homeAddress: string;
   homeLandline: string;
   [k: string]: string | number;
