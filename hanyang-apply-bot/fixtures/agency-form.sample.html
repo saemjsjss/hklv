@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Hanyang University IIE application submission system (fixture)</title>
+  <style>
+    body { font-family: sans-serif; margin: 24px; }
+    table { border-collapse: collapse; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 5px 9px; text-align: left; }
+    th { background: #f3f3f3; white-space: nowrap; }
+    .hidden { display: none; }
+    h2 { font-size: 15px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <h1>Hanyang University IIE application submission system</h1>
+  <p>한국어 | <a href="#" onclick="return false">English</a> | 汉语 | 日本語</p>
+
+  <div id="landing">
+    <button type="button" onclick="show('consent')">Registration Information</button>
+    <button type="button" onclick="show('consent')">Application</button>
+    <button type="button" onclick="show('consent')">Edit Application</button>
+    <button type="button" onclick="show('consent')">Application Status</button>
+  </div>
+
+  <div id="consent" class="hidden">
+    <h2>Hanyang University IIE Application Privacy Policy</h2>
+    <table>
+      <tr><th>Required information</th><td>Agree <input type="checkbox" id="agree" /></td><td>Disagree <input type="checkbox" /></td></tr>
+    </table>
+    <p><button type="button" onclick="toForm()">Next(下一个)</button></p>
+  </div>
+
+  <div id="form" class="hidden">
+    <h2>Study Agency Insert Mode</h2>
+    <table>
+      <tr><th>Applying Course</th><td><label><input type="radio" name="course" style="display:none" /> 2026 Winter Korean Language and culture(02)</label></td></tr>
+      <tr><th>E-mail</th><td><input type="text" /></td></tr>
+      <tr><th>Password</th><td><input type="text" /></td></tr>
+      <tr><th>Password(check)</th><td><input type="text" /></td></tr>
+
+      <tr><th>Number of Semester Applying</th><td><select><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></td></tr>
+      <tr><th>Prefered Class Time for the first semester</th><td><select><option value="">Select</option><option>Morning Class (09:00~13:00) (might not be applied. First-come, first served basis)</option><option>Afternoon Class (14:00~18:00)</option><option>Don't Mind (Automatically assigned to the afternoon half.)</option></select></td></tr>
+      <tr><th>Level Test Participation</th><td><select><option value="">Select</option><option>Participate</option><option>Don't participate (direct placement into Level 1)</option></select></td></tr>
+      <tr><th>Applying for Pre-Korean Class</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>Whether apply for the dormitory or not</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>How to pay the tuition and the dormitory fee</th><td><select><option value="">Select</option><option>Lump-sum payment</option><option>Installment</option></select></td></tr>
+
+      <tr><th>Photo</th><td><input type="file" /></td></tr>
+      <tr><th>student email address</th><td><input type="text" /></td></tr>
+      <tr><th>Name</th><td>First Name <input type="text" /> Last Name <input type="text" /></td></tr>
+      <tr><th>Gender</th><td><select><option value="">Select</option><option>Male</option><option>Female</option></select></td></tr>
+      <tr><th>Nationality</th><td><select><option value="">Select</option><option>Bangladesh</option><option>India</option></select></td></tr>
+      <tr><th>Date of Birth</th><td><input type="text" /></td></tr>
+      <tr><th>Passport Number</th><td><input type="text" /> No Passport Number <input type="checkbox" /></td></tr>
+      <tr><th>Passport file</th><td><input type="file" /></td></tr>
+      <tr><th>Address in Home Country</th><td><input type="text" /></td></tr>
+      <tr><th>Address in Korea</th><td><input type="text" /></td></tr>
+      <tr><th>Phone Number in Home Country</th><td><input type="text" /></td></tr>
+      <tr><th>Kakao/Wechat/Line</th><td><select style="display:none"><option value="">Select</option><option>Kakao</option><option>Wechat</option><option>Line</option></select> <input type="text" /></td></tr>
+      <tr><th>Phone Number in Korea</th><td><input type="text" /> - <input type="text" /> - <input type="text" /></td></tr>
+      <tr><th>Hanyang University Student Number</th><td><input type="text" /></td></tr>
+      <tr><th>Preferred Language</th><td><select><option value="">Select</option><option>Korean</option><option>English</option></select></td></tr>
+
+      <tr><th>Name of the School graduated</th><td><input type="text" /></td></tr>
+      <tr><th>Date of degree obtained</th><td><input type="text" /></td></tr>
+      <tr><th>Highest level of Education Achieved</th><td><select><option value="">Select</option><option>Undergraduate</option><option>Postgraduate or Higher</option><option>High School</option></select></td></tr>
+      <tr><th>Proof of gap period</th><td><input type="file" /></td></tr>
+      <tr><th>Documents of the last degree achieved</th><td><input type="file" /></td></tr>
+
+      <tr><th>Applying for Student D-4 VISA</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>VISA status</th><td><select><option value="">Select</option><option>Applied</option><option>Issued</option></select></td></tr>
+      <tr><th>VISA number</th><td><input type="text" /></td></tr>
+      <tr><th>VISA expiring date</th><td><input type="text" /></td></tr>
+
+      <tr><th>Learning Experience</th><td><select><option value="">Select</option><option>Yes</option><option>No</option></select></td></tr>
+      <tr><th>Name of Institute</th><td><input type="text" /></td></tr>
+      <tr><th>Period of Study</th><td><input type="text" /></td></tr>
+      <tr><th>Completed Level</th><td><input type="text" /></td></tr>
+      <tr><th>Name of Textbook</th><td><input type="text" /></td></tr>
+
+      <tr><th>Purpose of Study</th><td><select><option value="">Select</option><option>Enter a university</option><option>Employment</option><option>Interest / Culture</option></select></td></tr>
+      <tr><th>Aiming Level to Achieve</th><td><select><option value="">Select</option><option>Level 1</option><option>Level 2</option><option>Level 3</option><option>Level 4</option><option>Level 5</option><option>Level 6</option></select></td></tr>
+      <tr><th>Estimated period of enrollemnt at Hanyang University IIE</th><td><select><option value="">Select</option><option>1 semester</option><option>2 semesters</option><option>3 semesters</option><option>4 semesters</option></select></td></tr>
+
+      <tr><th>Name</th><td><input type="text" /></td></tr>
+      <tr><th>Relation to the Applicant</th><td><input type="text" /></td></tr>
+      <tr><th>Contact</th><td><input type="text" /></td></tr>
+
+      <tr><th>Name of Company</th><td><input type="text" /></td></tr>
+      <tr><th>Phone Number</th><td><input type="text" /></td></tr>
+      <tr><th>E-mail</th><td><input type="text" /></td></tr>
+
+      <tr><th>Financial Statement</th><td><input type="file" /></td></tr>
+      <tr><th>Family Relationship documents</th><td><input type="file" /></td></tr>
+
+      <tr><th>Personal Statement</th><td><textarea rows="3" cols="40"></textarea></td></tr>
+      <tr><th>Study Plan</th><td><textarea rows="3" cols="40"></textarea></td></tr>
+
+      <tr><th>Other documents</th><td><input type="file" /></td></tr>
+    </table>
+    <p><button type="button">Save</button></p>
+  </div>
+
+  <script>
+    function show(id) { document.getElementById('landing').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); }
+    function toForm() {
+      if (!document.getElementById('agree').checked) { alert('Please agree to the required information.'); return; }
+      document.getElementById('consent').classList.add('hidden');
+      document.getElementById('form').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

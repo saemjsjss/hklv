@@ -1,0 +1,39 @@
+HANYANG IIE — AGENCY APPLICATION BOT  (Windows)
+================================================
+
+Fills the Hanyang International Education Institute application for every
+student in the spreadsheet, one after another.
+
+FIRST-TIME SETUP (once per PC)
+------------------------------
+1. Install Node.js (LTS) from https://nodejs.org  — just click through the
+   installer with the defaults, then restart the PC once.
+2. Keep this whole "hanyang-apply-bot" folder together (don't move files out).
+3. The first time you run any button below it will spend 1-3 minutes installing
+   what it needs (you'll see a black window working). That only happens once.
+
+FILL IN YOUR STUDENTS
+---------------------
+1. Open  Hanyang_Students_Template.xlsx  and type one student per row, from
+   row 4 down (row 3 is a sample you can delete). See the "Guide" tab.
+   - Dropdowns: click the cell and pick.
+   - Dates: type like  1999-05-15  (put an apostrophe first if Excel reformats:
+     '1999-05-15).
+   - Phone numbers keep the + you type.
+2. For each student make a folder inside "uploads" named exactly like their
+   "Student Folder" cell, and put their files in it:
+       photo.jpg  passport.jpg  education.pdf  gap.pdf  financial.pdf
+       family.pdf  other.pdf     (only the ones you have; photo must be <=20KB)
+3. Save the spreadsheet.
+
+RUN IT (double-click)
+---------------------
+RUN_TEST_ONE      Fills the first student only, does NOT submit. Watch Chrome.
+RUN_FILL_ALL      Fills every student, does NOT submit. Screenshots each into
+                  output\screenshots\ so you can review before submitting.
+RUN_SUBMIT_ONE    Submits ONE student (a safe first real submission).
+RUN_SUBMIT_ALL    Submits every student, one after another, until finished.
+
+Passwords + status for each student are saved to  output\submissions.csv
+(keep it — students need the password to edit their application later).
+Re-running a submit will NOT re-submit anyone already submitted.
