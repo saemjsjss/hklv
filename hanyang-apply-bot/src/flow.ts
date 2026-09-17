@@ -4,7 +4,7 @@
  * Korean fallbacks are tried too, so it works whichever language loads first.
  */
 import type { Page } from 'playwright';
-import { clickByText } from './browser.js';
+import { clickByText, setChecked } from './browser.js';
 import { log } from './log.js';
 
 async function clickFirst(page: Page, locs: ReturnType<Page['getByRole']>[]): Promise<boolean> {
@@ -45,7 +45,7 @@ async function agreeRequired(page: Page): Promise<void> {
     if (n > 0) {
       for (let i = 0; i < n; i++) {
         const box = rows.nth(i).locator('input[type="checkbox"]').first();
-        if ((await box.count()) > 0) await box.check().catch(() => {});
+        if ((await box.count()) > 0) await setChecked(box).catch(() => {});
       }
       return;
     }
@@ -81,7 +81,7 @@ export async function agreePledge(page: Page): Promise<boolean> {
     .filter({ has: page.locator('input[type="checkbox"]') })
     .first();
   if ((await row.count()) > 0) {
-    await row.locator('input[type="checkbox"]').first().check().catch(() => {});
+    await setChecked(row.locator('input[type="checkbox"]').first()).catch(() => {});
     return true;
   }
   return false;

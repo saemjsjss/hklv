@@ -4,7 +4,7 @@
  * ones that repeat across sections (E-mail: General/Agent; Name: Personal/Emergency).
  */
 import type { Locator, Page } from 'playwright';
-import { control, rowFor, selectByText } from './browser.js';
+import { control, rowFor, selectByText, setChecked } from './browser.js';
 import { resolveUpload } from './uploads.js';
 import { generatePassword } from './password.js';
 import { log } from './log.js';
@@ -97,8 +97,8 @@ async function setText(loc: Locator, value: string): Promise<void> {
 /** Pick the "Applying Course" radio matching the course text (else the first). */
 async function selectCourse(page: Page, text: string): Promise<boolean> {
   let radios = (await rowFor(page, 'Applying Course')).locator('input[type="radio"]');
-  // Fallback: the form has a single course radio — take any visible one.
-  if ((await radios.count()) === 0) radios = page.locator('input[type="radio"]:visible');
+  // Fallback: the form has a single course radio — take any radio (may be hidden/custom).
+  if ((await radios.count()) === 0) radios = page.locator('input[type="radio"]');
   const n = await radios.count();
   if (n === 0) return false;
   if (text) {
@@ -108,12 +108,12 @@ async function selectCourse(page: Page, text: string): Promise<boolean> {
         (await r.locator('xpath=ancestor::label[1]').textContent().catch(() => null)) ??
         (await r.locator('xpath=..').textContent().catch(() => null));
       if (ctx && norm(ctx).includes(norm(text))) {
-        await r.check();
+        await setChecked(r);
         return true;
       }
     }
   }
-  await radios.first().check();
+  await setChecked(radios.first());
   return true;
 }
 
@@ -180,7 +180,7 @@ export async function fillStudent(
   // "No Passport Number" checkbox.
   if (/^(yes|y|true|1)$/i.test(s.noPassport)) {
     const box = await control(page, 'Passport Number', 'checkbox');
-    if (box) await box.check();
+    if (box) await setChecked(box);
     else miss('No Passport Number checkbox not found');
   }
 

@@ -85,6 +85,8 @@ export async function control(
     const el = all.nth(i);
     if (!wantVisible || (await el.isVisible().catch(() => false))) hits.push(el);
   }
+  // Fallback: some controls are hidden (custom-styled). Use them anyway.
+  if (hits.length === 0) for (let i = 0; i < n; i++) hits.push(all.nth(i));
   return hits[index];
 }
 
@@ -102,13 +104,55 @@ export async function selectByText(loc: Locator, value: string): Promise<boolean
     })),
   );
   const pick = async (o: { text: string; value: string }) => {
-    await loc.selectOption(o.value ? o.value : { label: o.text }, { timeout: 5000 });
+    // Native selectOption when the control is visible; otherwise (hidden/custom) set it in the DOM.
+    if (await loc.isVisible().catch(() => false)) {
+      try {
+        await loc.selectOption(o.value ? o.value : { label: o.text }, { timeout: 4000 });
+        return true;
+      } catch {
+        /* fall through to DOM set */
+      }
+    }
+    {
+      await loc.evaluate((el, wanted) => {
+        const sel = el as HTMLSelectElement;
+        const opt = Array.from(sel.options).find(
+          (x) => (x.textContent || '').trim() === wanted || x.value === wanted,
+        );
+        if (opt) {
+          sel.value = opt.value || (opt.textContent || '').trim();
+          sel.dispatchEvent(new Event('input', { bubbles: true }));
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }, o.value || o.text);
+    }
     return true;
   };
   for (const o of read) if (o.text === value) return pick(o);
   for (const o of read) if (o.value === value) return pick(o);
   for (const o of read) if (o.text && (o.text.includes(value) || value.includes(o.text))) return pick(o);
   return false;
+}
+
+/** Tick a checkbox/radio, even when it is hidden behind custom styling. */
+export async function setChecked(loc: Locator): Promise<void> {
+  if (await loc.isVisible().catch(() => false)) {
+    try {
+      await loc.check();
+      return;
+    } catch {
+      /* fall through to DOM set */
+    }
+  }
+  await loc.evaluate((el) => {
+    const c = el as HTMLInputElement;
+    if (!c.checked) {
+      c.checked = true;
+      c.dispatchEvent(new Event('input', { bubbles: true }));
+      c.dispatchEvent(new Event('change', { bubbles: true }));
+      c.dispatchEvent(new Event('click', { bubbles: true }));
+    }
+  });
 }
 
 /** Click a button/link/submit whose visible text (or value) matches. */
