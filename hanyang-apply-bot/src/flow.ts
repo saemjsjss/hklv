@@ -73,6 +73,20 @@ export async function navigateToForm(page: Page, url: string): Promise<void> {
     .catch(() => log.warn('Agency form field (student email address) did not appear in time.'));
 }
 
+/** Tick the "Security pledge → Agree" checkbox at the foot of the form (needed before submit). */
+export async function agreePledge(page: Page): Promise<boolean> {
+  const row = page
+    .locator('tr, li, div')
+    .filter({ hasText: /pledge/i })
+    .filter({ has: page.locator('input[type="checkbox"]') })
+    .first();
+  if ((await row.count()) > 0) {
+    await row.locator('input[type="checkbox"]').first().check().catch(() => {});
+    return true;
+  }
+  return false;
+}
+
 /** Click the final submit button. */
 export async function submitForm(page: Page, submitText: string): Promise<boolean> {
   return clickByText(page, submitText);

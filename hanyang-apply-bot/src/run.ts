@@ -11,7 +11,7 @@ import { join, resolve } from 'node:path';
 import { config } from './config.js';
 import { launch } from './browser.js';
 import { readStudents } from './students.js';
-import { navigateToForm, submitForm } from './flow.js';
+import { agreePledge, navigateToForm, submitForm } from './flow.js';
 import { fillStudent } from './form.js';
 import { recordSubmission } from './ledger.js';
 import { log } from './log.js';
@@ -65,6 +65,7 @@ async function main(): Promise<void> {
       await page.screenshot({ path: shot, fullPage: true }).catch(() => {});
 
       if (config.submit) {
+        await agreePledge(page).catch(() => {});
         status = (await submitForm(page, config.submitText)) ? 'submitted' : 'filled (submit button not found)';
         await page.waitForTimeout(1500);
       }

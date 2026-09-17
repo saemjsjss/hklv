@@ -14,7 +14,7 @@ import type { Page } from 'playwright';
 import { launch, control, rowFor } from './browser.js';
 import { navigateToForm } from './flow.js';
 import { fillStudent } from './form.js';
-import { readStudents } from './students.js';
+import { readStudents, excelSerialToISO } from './students.js';
 import { log } from './log.js';
 import type { Student } from './types.js';
 
@@ -67,6 +67,9 @@ async function main(): Promise<void> {
     fail++;
     log.error(`reader threw: ${(err as Error).message}`);
   }
+
+  // Excel date-serial -> ISO (a date-formatted cell reads back as a serial number).
+  await check('excelSerialToISO(36526)', async () => excelSerialToISO(36526), '2000-01-01');
 
   // Per-student upload folder with all seven standard files.
   const uploadsDir = mkdtempSync(join(tmpdir(), 'hy-upl-'));

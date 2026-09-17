@@ -64,6 +64,24 @@ const TEMPLATE_COLS: { key: keyof Student; hdr: string }[] = [
 
 const headerText = (h: unknown): string => String(h ?? '').replace(/^[★*\s]+/, '').trim();
 
+/** Columns the portal treats as calendar dates. */
+const DATE_KEYS = new Set<keyof Student>(['dob', 'eduCompletionDate', 'visaExpiry']);
+const pad = (n: number) => String(n).padStart(2, '0');
+
+/** Excel date serial (1900 system) -> YYYY-MM-DD, in UTC to avoid timezone drift. */
+export function excelSerialToISO(serial: number): string {
+  const d = new Date(Math.round((serial - 25569) * 86_400_000));
+  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
+}
+
+/** Normalize a cell to a string, converting date-formatted cells to YYYY-MM-DD. */
+function cellToStr(key: keyof Student, raw: unknown): string {
+  if (raw == null || raw === '') return '';
+  if (raw instanceof Date) return `${raw.getUTCFullYear()}-${pad(raw.getUTCMonth() + 1)}-${pad(raw.getUTCDate())}`;
+  if (DATE_KEYS.has(key) && typeof raw === 'number') return excelSerialToISO(raw);
+  return String(raw).trim();
+}
+
 const emptyStudent = (rowNum: number): Student =>
   Object.fromEntries(
     [['rowNum', rowNum], ...TEMPLATE_COLS.map((c) => [c.key, ''])],
@@ -87,7 +105,7 @@ export function readStudents(templatePath: string, dataStart: number): Student[]
     const row = rows[i];
     if (!row) continue;
     const s = emptyStudent(i + 1);
-    for (const [key, j] of colOf) s[key] = String(row[j] ?? '').trim();
+    for (const [key, j] of colOf) s[key] = cellToStr(key, row[j]);
     if (!s.studentEmail && !s.givenName && !s.familyName && !s.folder) continue; // skip blanks
     out.push(s);
   }

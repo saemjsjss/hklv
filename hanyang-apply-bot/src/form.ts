@@ -96,7 +96,9 @@ async function setText(loc: Locator, value: string): Promise<void> {
 
 /** Pick the "Applying Course" radio matching the course text (else the first). */
 async function selectCourse(page: Page, text: string): Promise<boolean> {
-  const radios = (await rowFor(page, 'Applying Course')).locator('input[type="radio"]');
+  let radios = (await rowFor(page, 'Applying Course')).locator('input[type="radio"]');
+  // Fallback: the form has a single course radio — take any visible one.
+  if ((await radios.count()) === 0) radios = page.locator('input[type="radio"]:visible');
   const n = await radios.count();
   if (n === 0) return false;
   if (text) {
