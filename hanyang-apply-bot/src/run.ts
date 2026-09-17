@@ -13,17 +13,20 @@ import { launch } from './browser.js';
 import { readStudents } from './students.js';
 import { agreePledge, navigateToForm, submitForm } from './flow.js';
 import { fillStudent } from './form.js';
-import { recordSubmission } from './ledger.js';
+import { recordSubmission, readSubmitted } from './ledger.js';
 import { log } from './log.js';
 import type { Student } from './types.js';
 
-function selected(all: Student[]): Student[] {
+function selected(all: Student[], submitted: Set<string>): Student[] {
   let list = all;
   if (config.only) {
     const q = config.only.toLowerCase();
     list = list.filter(
       (s) => s.studentEmail.toLowerCase() === q || s.folder.toLowerCase() === q || s.accountEmail.toLowerCase() === q,
     );
+  }
+  if (config.submit && config.skipSubmitted) {
+    list = list.filter((s) => !submitted.has(s.studentEmail.toLowerCase()));
   }
   if (config.limit > 0) list = list.slice(0, config.limit);
   return list;
@@ -36,13 +39,15 @@ async function main(): Promise<void> {
   const shotsDir = join(outputDir, 'screenshots');
   mkdirSync(shotsDir, { recursive: true });
 
-  const students = selected(readStudents(templatePath, config.dataStart));
+  const submitted = config.submit && config.skipSubmitted ? readSubmitted(outputDir) : new Set<string>();
+  const students = selected(readStudents(templatePath, config.dataStart), submitted);
   if (students.length === 0) {
-    log.warn('No students to process (check the spreadsheet, HY_ONLY / HY_LIMIT, and HY_DATA_START).');
+    log.warn('No students to process (check the spreadsheet, HY_ONLY / HY_LIMIT, and whether everyone is already submitted).');
     return;
   }
 
   log.info(`Loaded ${students.length} student(s) from ${config.template}.`);
+  if (submitted.size) log.info(`Skipping ${submitted.size} already-submitted (from submissions.csv).`);
   log.info(config.submit ? '⚠ SUBMIT mode: applications WILL be submitted.' : 'Dry run: filling only, NOT submitting. Set HY_SUBMIT=true to submit.');
 
   const { browser, page } = await launch(config);

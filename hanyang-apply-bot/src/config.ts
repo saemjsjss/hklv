@@ -38,6 +38,8 @@ export const config = {
   dataStart: num('HY_DATA_START', 4),
   submit: bool('HY_SUBMIT', false),
   submitText: str('HY_SUBMIT_TEXT', 'Save & Submit'),
+  skipSubmitted: bool('HY_SKIP_SUBMITTED', true), // don't re-submit anyone already in the ledger
+
   only: str('HY_ONLY', ''),
   limit: num('HY_LIMIT', 0),
   login: { user: str('HY_LOGIN_USER'), pass: str('HY_LOGIN_PASS') },
