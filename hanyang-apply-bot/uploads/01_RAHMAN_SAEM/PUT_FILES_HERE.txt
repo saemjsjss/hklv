@@ -1,0 +1,8 @@
+Put this student's files here, named exactly:
+  photo.jpg      (Photo — JPEG only, <=20KB)
+  passport.jpg   (Passport file — jpg or pdf)
+  gap.pdf        (Proof of gap period)
+  education.pdf  (Documents of the last degree achieved)
+  financial.pdf  (Financial Statement)
+  family.pdf     (Family Relationship documents)
+  other.pdf      (Other documents — optional)
